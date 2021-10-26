@@ -1,7 +1,7 @@
-#### Tidy.nvim
+## tidy.nvim 🧹
 
-I like to keep my files orderly. Tidy.nvim is a function and autocommand pair that helps me do this by removing
-all empty lines from the end of the file and trailing whitespace from all lines on every save.
+A function and autocommand pair that removes all trailing whitespace \
+and all empty lines at the end of the buffer on every `BufWritePre`.
 
 
 https://user-images.githubusercontent.com/59481467/138811091-05031eb1-96fc-4915-a349-e41d87c921ea.mp4
