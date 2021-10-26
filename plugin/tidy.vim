@@ -1,5 +1,5 @@
 
 augroup Tidy
     au!
-    au BufWritePre * lua require( "tidy.init" ).clear_spaces()
+    au BufWritePre * lua require( "tidy.init" ).tidy_up()
 augroup END
