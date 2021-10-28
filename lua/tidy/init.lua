@@ -1,7 +1,5 @@
 -- MP
--- These sources did all the work
---  1. https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace
---  2. https://stackoverflow.com/a/7501902
+
 
 local M = {}
 
@@ -12,10 +10,10 @@ function M.tidy_up()
     local pos = vim.api.nvim_win_get_cursor( 0 )
 
     -- delete all whitespace, see source 1
-    vim.cmd[[:%s/\s\+$//e]]
+    vim.cmd[[:keepjumps keeppatterns %s/\s\+$//e]]
 
     -- delete all lines at end of buffer, see source 2
-    vim.cmd[[:silent! 0;/^\%(\n*.\)\@!/,$d]]
+    vim.cmd[[:keepjumps keeppatterns silent! 0;/^\%(\n*.\)\@!/,$d]]
 
     -- get row count after line deletion
     local end_row = vim.api.nvim_buf_line_count( 0 )
