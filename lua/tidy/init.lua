@@ -11,7 +11,6 @@ local M = {
 }
 
 function M.setup(user_config)
-
     -- integrate user configuration
     M.config = vim.tbl_deep_extend("force", M.config, user_config or {})
 
@@ -27,22 +26,23 @@ function M.tidy_up()
     local cmd_mods = ":keepjumps keeppatterns silent! "
 
     local patterns = {
-        -- delete all new lines at beginning of file
-
-        sof = [[%s/\%^\n*/]],
-        -- delete all lines at end of buffer, see source 2
-
+        -- delete all lines at end of buffer, see sources
         eof = [[0;/^\%(\n*.\)\@!/ + ]] .. M.config.eof_quant ..  ",$d",
-        -- compress all instances of multiple newlines into one
 
+        -- compress all instances of multiple newlines into one, see sources
         multi = [[:%s/\n\{2,}/\r\r/e]],
-        -- delete all whitespace, see source 1
+
+        -- delete all new lines at beginning of file
+        sof = [[%s/\%^\n*/]],
+
+        -- delete all whitespace, see sources
         ws = [[%s/\s\+$//e]]
     }
 
     -- get tuple of cursor position before making changes
     local pos = vim.api.nvim_win_get_cursor(0)
 
+    -- execute chosen patterns
     for _, fmt_type in ipairs(M.config.fmts) do
         vim.cmd(cmd_mods .. patterns[fmt_type])
     end
