@@ -1,9 +1,11 @@
 # tidy.nvim 🧹
 
-A function and autocommand pair that removes all
+A function and autocommand pair that can
 
-    - trailing whitespace
-    - empty lines at the end of the buffer
+    - remove all empty lines at the top of the buffer
+    - remove all trailing whitespace
+    - remove a variable amount of empty lines at the end of the buffer
+    - condense multiple empty lines into one
 
 on every `BufWritePre`.
 
