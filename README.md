@@ -8,7 +8,8 @@ A function and autocommand pair that removes all
 
 on every `BufWritePre`.
 
-![tidy](https://user-images.githubusercontent.com/59481467/142785684-96559135-88e7-4c50-a848-56f2c65262ef.gif)
+![tidy](https://user-images.githubusercontent.com/59481467/148654417-73a2eaeb-272e-4cb8-910b-870f2f46fa0a.gif)
+
 
 **Note**: See the `cfg` branch for increased functionality and configuration.
 
