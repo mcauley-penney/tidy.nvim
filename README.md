@@ -10,8 +10,10 @@ on every `BufWritePre`.
 
 ![tidy](https://user-images.githubusercontent.com/59481467/142785684-96559135-88e7-4c50-a848-56f2c65262ef.gif)
 
+**Note**: See the `cfg` branch for increased functionality and configuration.
 
-## install
+
+## Installation
 - Packer
 
 ```lua
@@ -24,8 +26,11 @@ or with lazy-loading
 use{ "McAuleyPenney/tidy.nvim", event = "BufWritePre" }
 ```
 
+## Todo
+- [ ] preserve undotree
 
-## Credits:
+
+## Credits
 - [Vim Tips Wiki entry for removing unwanted spaces](https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace)
 
 - ib., the author of [this stack overflow answer](https://stackoverflow.com/a/7501902)

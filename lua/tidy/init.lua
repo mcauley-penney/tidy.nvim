@@ -1,20 +1,17 @@
--- MP
-
 local M = {}
 
 function M.tidy_up()
-
     -- get tuple of cursor position before making changes
-    local pos = vim.api.nvim_win_get_cursor( 0 )
+    local pos = vim.api.nvim_win_get_cursor(0)
 
     -- delete all whitespace, see source 1
-    vim.cmd[[:keepjumps keeppatterns %s/\s\+$//e]]
+    vim.cmd([[:keepjumps keeppatterns %s/\s\+$//e]])
 
     -- delete all lines at end of buffer, see source 2
-    vim.cmd[[:keepjumps keeppatterns silent! 0;/^\%(\n*.\)\@!/,$d]]
+    vim.cmd([[:keepjumps keeppatterns silent! 0;/^\%(\n*.\)\@!/,$d]])
 
     -- get row count after line deletion
-    local end_row = vim.api.nvim_buf_line_count( 0 )
+    local end_row = vim.api.nvim_buf_line_count(0)
 
     --[[
         if the row value in the original cursor
@@ -29,7 +26,7 @@ function M.tidy_up()
         pos[1] = end_row
     end
 
-    vim.api.nvim_win_set_cursor( 0, pos )
+    vim.api.nvim_win_set_cursor(0, pos)
 end
 
 return M
