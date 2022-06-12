@@ -1,7 +1,7 @@
 local M = {}
 
 local function is_excluded_ft(opts)
-    if not opts.filetype_exclude then
+    if not opts or not opts.filetype_exclude then
         return false
     end
 
