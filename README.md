@@ -1,6 +1,6 @@
 # tidy.nvim 🧹
 
-A function and autocommand pair that removes all
+An [autocommand](https://neovim.io/doc/user/autocmd.html) that removes all
 
     - trailing whitespace
     - empty lines at the end of the buffer
@@ -12,11 +12,11 @@ on every `BufWritePre`.
 
 
 ## About
-I originally wrote this as a wrapper around a couple of vim regex commands used for formatting files before I began using formatters. These commands are not mine, please see the `Credits` section below for sources. My contribution is a basic conditional which ensures that the user's cursor doesn't migrate during the cleaning operations conducted on the buffer's contents unless the cursor is in the removed white space. Even with real formatters in my setup now, I still like and use this because I like these specific formats to be applied to every buffer and don't want to have a formatting tool installed for them. There really isn't a reason to have this in a plugin other than wanting to disseminate it for new users or people who didn't know you could do this. You could (should) instead just yank and put the code right in your configuration.
+I originally wrote this as a wrapper around a couple of vim regex commands used for formatting files before I began using formatters. These commands are not mine, please see the `Credits` section below for sources. Even with real formatters in my setup now, I still like and use this because I like these specific formats to be applied to every buffer and don't want to have a formatting tool installed for them. There really isn't a reason to have this in a plugin other than wanting to disseminate it for new users or people who didn't know you could do this. You could (should) instead just yank and put the code right in your configuration.
 
 
 ## Installation
-- Packer
+- [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
 ```lua
 use({
@@ -26,6 +26,16 @@ use({
     end
 })
 ```
+
+## Configuration
+Tidy will work on all buffers using only the basic installation shown above. All configuration options are optional and there are no defaults. The options displayed below are simply examples.
+
+```lua
+require("tidy").setup({
+    filetype_exclude = { "markdown", "python" },
+}) 
+```
+
 
 ## Credits
 - [Vim Tips Wiki entry for removing unwanted spaces](https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace)
