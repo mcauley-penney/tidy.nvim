@@ -1,25 +1,30 @@
 local M = {}
 
+local function list_to_set(list)
+  local set = {}
+
+  for _, item in ipairs(list) do
+    set[item] = true
+  end
+
+  return set
+end
+
 local function is_excluded_ft(opts)
-    if not opts or not opts.filetype_exclude then
-        return false
-    end
-
-    local ft = vim.api.nvim_buf_get_option(0, "filetype")
-
-    for _, entry in ipairs(opts.filetype_exclude) do
-        if entry == ft then
-            return true
-        end
-    end
-
+  if not opts.filetype_exclude then
     return false
+  end
+
+  local ft = vim.api.nvim_buf_get_option(0, "filetype")
+  local ft_set = list_to_set(opts.filetype_exclude)
+
+  return ft_set[ft]
 end
 
 local function reset_cursor_pos(pos)
-    local num_rows = vim.api.nvim_buf_line_count(0)
+  local num_rows = vim.api.nvim_buf_line_count(0)
 
-    --[[
+  --[[
         if the row value in the original cursor
         position tuple is greater than the
         line count after empty line deletion
@@ -28,33 +33,42 @@ local function reset_cursor_pos(pos)
         the file when they were deleted), set
         the cursor row to the last line.
     ]]
-    if pos[1] > num_rows then
-        pos[1] = num_rows
-    end
+  if pos[1] > num_rows then
+    pos[1] = num_rows
+  end
 
-    vim.api.nvim_win_set_cursor(0, pos)
+  vim.api.nvim_win_set_cursor(0, pos)
 end
 
 function M.setup(opts)
-    local tidy_grp = vim.api.nvim_create_augroup("tidy", { clear = true })
 
-    vim.api.nvim_create_autocmd("BufWritePre", {
-        group = tidy_grp,
-        callback = function()
-            if is_excluded_ft(opts) then
-                return false
-            end
+  local defaults = {
+    filetype_exclude = {},
+    newline_at_eof = false
+  }
 
-            local cursor_pos = vim.api.nvim_win_get_cursor(0)
+  opts = vim.tbl_extend("force", defaults, opts or {})
 
-            vim.cmd([[:keepjumps keeppatterns %s/\s\+$//e]])
+  local tidy_grp = vim.api.nvim_create_augroup("tidy", { clear = true })
 
-            -- delete all lines at end of buffer, see source 2
-            vim.cmd([[:keepjumps keeppatterns silent! 0;/^\%(\n*.\)\@!/,$d]])
+  vim.api.nvim_create_autocmd("BufWritePre", {
+    group = tidy_grp,
+    callback = function()
+      if is_excluded_ft(opts) then
+        return false
+      end
 
-            reset_cursor_pos(cursor_pos)
-        end,
-    })
+      local cursor_pos = vim.api.nvim_win_get_cursor(0)
+
+      -- delete trailing whitespace
+      vim.cmd([[:keepjumps keeppatterns %s/\s\+$//e]])
+
+      -- delete lines @ eof
+      vim.cmd([[:keepjumps keeppatterns silent! 0;/^\%(\n*.\)\@!/,$d]])
+
+      reset_cursor_pos(cursor_pos)
+    end,
+  })
 end
 
 return M
