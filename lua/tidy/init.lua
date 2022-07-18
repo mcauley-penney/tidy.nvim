@@ -11,10 +11,6 @@ local function list_to_set(list)
 end
 
 local function is_excluded_ft(opts)
-  if not opts.filetype_exclude then
-    return false
-  end
-
   local ft = vim.api.nvim_buf_get_option(0, "filetype")
   local ft_set = list_to_set(opts.filetype_exclude)
 
@@ -44,7 +40,6 @@ function M.setup(opts)
 
   local defaults = {
     filetype_exclude = {},
-    newline_at_eof = false
   }
 
   opts = vim.tbl_extend("force", defaults, opts or {})
