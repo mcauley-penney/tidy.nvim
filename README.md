@@ -32,7 +32,7 @@ Tidy will work on all buffers using only the basic installation shown above. No 
 
 ```lua
 require("tidy").setup({
-    filetype_exclude = { "markdown", "python" },
+    filetype_exclude = { "markdown", "diff" },
 })
 ```
 
