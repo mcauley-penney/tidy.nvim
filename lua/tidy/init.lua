@@ -59,7 +59,7 @@ function M.setup(opts)
       vim.cmd([[:keepjumps keeppatterns %s/\s\+$//e]])
 
       -- delete lines @ eof
-      vim.cmd([[:keepjumps keeppatterns silent! 0;/^\%(\n*.\)\@!/,$d]])
+      vim.cmd([[:keepjumps keeppatterns silent! 0;/^\%(\n*.\)\@!/,$d_]])
 
       reset_cursor_pos(cursor_pos)
     end,
