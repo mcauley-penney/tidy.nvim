@@ -17,7 +17,7 @@ local function is_excluded_ft(opts)
   return ft_set[ft]
 end
 
-local function reset_cursor_pos(pos)
+local function reset_cursor_pos(pos, rows)
   local num_rows = vim.api.nvim_buf_line_count(0)
 
   --[[
@@ -29,8 +29,11 @@ local function reset_cursor_pos(pos)
         the file when they were deleted), set
         the cursor row to the last line.
     ]]
+  -- TODO: Correct cursor position after deleting leading blank lines
   if pos[1] > num_rows then
     pos[1] = num_rows
+  elseif pos[1] <= rows - num_rows then
+    pos[1] = 1
   end
 
   vim.api.nvim_win_set_cursor(0, pos)
@@ -54,14 +57,17 @@ function M.setup(opts)
       end
 
       local cursor_pos = vim.api.nvim_win_get_cursor(0)
+      local rows = vim.api.nvim_buf_line_count(0)
 
       -- delete trailing whitespace
       vim.cmd([[:keepjumps keeppatterns %s/\s\+$//e]])
 
+      -- delete lines @ bof
+      vim.cmd([[:keepjumps keeppatterns silent! %s/\%^\n*//]])
       -- delete lines @ eof
       vim.cmd([[:keepjumps keeppatterns silent! 0;/^\%(\n*.\)\@!/,$d_]])
 
-      reset_cursor_pos(cursor_pos)
+      reset_cursor_pos(cursor_pos, rows)
     end,
   })
 end
