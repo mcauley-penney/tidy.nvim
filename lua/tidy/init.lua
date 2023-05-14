@@ -1,5 +1,21 @@
 local M = {}
 
+M.enabled = true
+
+function M.toggle()
+  if vim.b.tidy_enabled == false then
+    vim.b.tidy_enabled = nil
+    M.enabled = true
+  else
+    M.enabled = not M.enabled
+  end
+  if M.enabled then
+    vim.notify("Tidy enabled on save", vim.log.levels.INFO, { title = "Tidy" })
+  else
+    vim.notify("Tidy disabled on save", vim.log.levels.WARN, { title = "Tidy" })
+  end
+end
+
 local function list_to_set(list)
   local set = {}
 
@@ -37,7 +53,6 @@ local function reset_cursor_pos(pos)
 end
 
 function M.setup(opts)
-
   local defaults = {
     filetype_exclude = {},
   }
@@ -49,7 +64,7 @@ function M.setup(opts)
   vim.api.nvim_create_autocmd("BufWritePre", {
     group = tidy_grp,
     callback = function()
-      if is_excluded_ft(opts) then
+      if not M.enabled or vim.b.tidy_enabled == false or is_excluded_ft(opts) then
         return false
       end
 
