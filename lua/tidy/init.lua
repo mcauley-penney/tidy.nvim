@@ -64,7 +64,7 @@ function M.setup(opts)
   vim.api.nvim_create_autocmd("BufWritePre", {
     group = tidy_grp,
     callback = function()
-      if not M.enabled or vim.b.tidy_enabled == false or is_excluded_ft(opts) then
+      if not M.enabled or vim.b.tidy_enabled == false or is_excluded_ft(opts) or not vim.tbl_isempty(vim.b.editorconfig) then
         return false
       end
 
