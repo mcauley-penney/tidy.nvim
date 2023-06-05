@@ -3,7 +3,7 @@
 An [autocommand](https://neovim.io/doc/user/autocmd.html) that removes all
 
     - trailing whitespace
-    - empty lines at the end of the buffer
+    - empty lines at the beginning and end of the buffer
 
 on every `BufWritePre`.
 
