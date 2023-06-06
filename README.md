@@ -1,43 +1,38 @@
 # tidy.nvim 🧹
 
-An [autocommand](https://neovim.io/doc/user/autocmd.html) that removes all
+An [autocommand](https://neovim.io/doc/user/autocmd.html) that removes all trailing white spaces and empty lines at the end of the buffer on every `BufWritePre`.
 
-    - trailing whitespace
-    - empty lines at the end of the buffer
-
-on every `BufWritePre`.
-
-
-![tidy](https://user-images.githubusercontent.com/59481467/170846833-40ab4e8c-ebdf-42c4-b1f1-a4d874f27ea8.gif)
-
-
-## About
-I originally wrote this as a wrapper around a couple of vim regex commands used for formatting files before I began using formatters. These commands are not mine, please see the `Credits` section below for sources. Even with real formatters in my setup now, I still like and use this because I like these specific formats to be applied to every buffer and don't want to have a formatting tool installed for them.
+![tidy-demo](https://github.com/mcauley-penney/tidy.nvim/assets/59481467/f3807c69-2b36-4a14-b83a-dd0f2829e096)
 
 
 ## Installation
-- [packer.nvim](https://github.com/wbthomason/packer.nvim)
+- [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
-use({
+{
     "mcauley-penney/tidy.nvim",
-    config = function()
-        require("tidy").setup()
-    end
-})
+    config = true,
+} 
 ```
+
 
 ## Configuration
-Tidy will work on all buffers using only the basic installation shown above. No configuration options are required. The options displayed below are simply examples.
+Tidy will work on all buffers using only the basic installation shown above. No configuration options are required, but please see the documentation for configuration options. An example configuration for lazy.nvim is
 
 ```lua
-require("tidy").setup({
-    filetype_exclude = { "markdown", "diff" },
-})
+{
+    "mcauley-penney/tidy.nvim",
+    config = { filetype_exclude = { "markdown", "diff" } },
+    init = function()
+        vim.keymap.set('n', "<leader>te", require("tidy").toggle, {})
+    end
+} 
 ```
 
 
-## Credits
+## About and Credits
+I originally wrote this as a wrapper around a couple of vim regex commands used for formatting files before I began using formatters. These commands are not mine, please see the sources below. Even with real formatters in my setup now, I still like and use this because I like these specific formats to be applied to every buffer and don't want to have a formatting tool installed for them.
+
 - [Vim Tips Wiki entry for removing unwanted spaces](https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace)
 
 - `ib.`, the author of [this Stack Overflow answer](https://stackoverflow.com/a/7501902)
