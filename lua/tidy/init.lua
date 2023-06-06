@@ -3,16 +3,12 @@ local M = {}
 M.enabled = true
 
 function M.toggle()
-  if vim.b.tidy_enabled == false then
-    vim.b.tidy_enabled = nil
-    M.enabled = true
-  else
-    M.enabled = not M.enabled
-  end
-  if M.enabled then
-    vim.notify("Tidy enabled on save", vim.log.levels.INFO, { title = "Tidy" })
-  else
+  M.enabled = not M.enabled
+
+  if not M.enabled then
     vim.notify("Tidy disabled on save", vim.log.levels.WARN, { title = "Tidy" })
+  else
+    vim.notify("Tidy enabled on save", vim.log.levels.INFO, { title = "Tidy" })
   end
 end
 
@@ -61,10 +57,10 @@ function M.setup(opts)
 
   local tidy_grp = vim.api.nvim_create_augroup("tidy", { clear = true })
 
-  vim.api.nvim_create_autocmd("BufWritePre", {
+	vim.api.nvim_create_autocmd("BufWritePre", {
     group = tidy_grp,
     callback = function()
-      if not M.enabled or vim.b.tidy_enabled == false or is_excluded_ft(opts) or not vim.tbl_isempty(vim.b.editorconfig) then
+      if not M.enabled or is_excluded_ft(opts) or not vim.tbl_isempty(vim.b.editorconfig) then
         return false
       end
 
