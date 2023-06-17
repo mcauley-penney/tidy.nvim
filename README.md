@@ -1,33 +1,62 @@
 # tidy.nvim 🧹
 
-An [autocommand](https://neovim.io/doc/user/autocmd.html) that removes all trailing white spaces and empty lines at the end of the buffer on every `BufWritePre`.
+**tidy.nvim** removes trailing white space and empty lines on BufWritePre.
 
 ![tidy-demo](https://github.com/mcauley-penney/tidy.nvim/assets/59481467/f3807c69-2b36-4a14-b83a-dd0f2829e096)
 
+## Features
+- Remove white space at the end of every line on save
+- Remove empty lines at the end of the buffer on save
+
+
+## Requirements
+- Neovim >= 0.9.0
+
+It may (should) work on lower versions, but is tested and updated using nightly.
+
 
 ## Installation
-- [lazy.nvim](https://github.com/folke/lazy.nvim)
+Your installation configuration will depend on your plugin manager. Below is the basic installation (using default options) for lazy.nvim.
 
 ```lua
 {
     "mcauley-penney/tidy.nvim",
     config = true,
-} 
+}
 ```
 
 
 ## Configuration
-Tidy will work on all buffers using only the basic installation shown above. No configuration options are required, but please see the documentation for configuration options. An example configuration for lazy.nvim is
+tidy.nvim comes with the following options and their default settings:
+
+```lua
+    {
+    	filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
+    }
+```
+
+
+A more full example configuration for lazy.nvim would be:
 
 ```lua
 {
     "mcauley-penney/tidy.nvim",
-    config = { filetype_exclude = { "markdown", "diff" } },
+    config = {
+        filetype_exclude = { "markdown", "diff" }
+    },
     init = function()
         vim.keymap.set('n', "<leader>te", require("tidy").toggle, {})
     end
-} 
+}
 ```
+
+
+## Usage
+tidy.nvim comes with the following functions:
+
+| Lua                              | Description                                                                                                                                          |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `require("tidy").toggle()`       | Turn tidy.nvim off for the current buffer a plugin                                                                                                   |
 
 
 ## About and Credits
