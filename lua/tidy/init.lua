@@ -12,9 +12,21 @@ function M.toggle()
   end
 end
 
+local function list_to_set(list)
+  local set = {}
+
+  for _, item in ipairs(list) do
+    set[item] = true
+  end
+
+  return set
+end
+
 local function is_excluded_ft(opts)
   local ft = vim.api.nvim_buf_get_option(0, "filetype")
-  return vim.list_contains(opts.filetype_exclude, ft)
+  local ft_set = list_to_set(opts.filetype_exclude)
+
+  return ft_set[ft]
 end
 
 local function reset_cursor_pos(pos)
@@ -42,14 +54,6 @@ function M.setup(opts)
   }
 
   opts = vim.tbl_extend("force", defaults, opts or {})
-
-	if not vim.tbl_islist(opts.filetype_exclude) then
-		vim.notify(
-			"tidy.nvim: filetype_exclude option must be a list-like table...",
-			vim.log.levels.ERROR,
-			{ title = "Tidy" }
-		)
-	end
 
   local tidy_grp = vim.api.nvim_create_augroup("tidy", { clear = true })
 
