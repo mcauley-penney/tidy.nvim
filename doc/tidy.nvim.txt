@@ -1,4 +1,4 @@
-*tidy.nvim.txt*          For Neovim >= 0.9.0         Last change: 2023 June 17
+*tidy.nvim.txt*        For Neovim >= 0.9.0        Last change: 2023 October 22
 
 ==============================================================================
 Table of Contents                                *tidy.nvim-table-of-contents*
@@ -59,7 +59,7 @@ A more full example configuration for lazy.nvim would be:
 >lua
     {
         "mcauley-penney/tidy.nvim",
-        config = {
+        opts = {
             filetype_exclude = { "markdown", "diff" }
         },
         init = function()
@@ -73,12 +73,13 @@ USAGE                                             *tidy.nvim-tidy.nvim--usage*
 
 tidy.nvim comes with the following functions:
 
-  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------
   Lua                        Description
-  -------------------------- ----------------------------------------------------------
-  require("tidy").toggle()   Turn tidy.nvim off for the current buffer a plugin
+  -------------------------- ----------------------------------------------
+  require("tidy").toggle()   Turn tidy.nvim off for the current buffer a
+                             plugin
 
-  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------
 
 ABOUT AND CREDITS                     *tidy.nvim-tidy.nvim--about-and-credits*
 
