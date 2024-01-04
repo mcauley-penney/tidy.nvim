@@ -1,4 +1,4 @@
-*tidy.nvim.txt*        For Neovim >= 0.9.0        Last change: 2023 October 22
+*tidy.nvim.txt*        For Neovim >= 0.9.0        Last change: 2024 January 04
 
 ==============================================================================
 Table of Contents                                *tidy.nvim-table-of-contents*
@@ -14,13 +14,13 @@ Table of Contents                                *tidy.nvim-table-of-contents*
 ==============================================================================
 1. tidy.nvim                                            *tidy.nvim-tidy.nvim-*
 
-**tidy.nvim**removes trailing white space and empty lines on BufWritePre.
+**tidy.nvim**removes trailing white space and empty lines at EOF.
 
 
 FEATURES                                       *tidy.nvim-tidy.nvim--features*
 
-- Remove white space at the end of every line on save
-- Remove empty lines at the end of the buffer on save
+- Remove white space at the end of every line on save or manual activation
+- Remove empty lines at the end of the buffer on save or manual activation
 
 
 REQUIREMENTS                               *tidy.nvim-tidy.nvim--requirements*
@@ -33,8 +33,7 @@ nightly.
 
 INSTALLATION                               *tidy.nvim-tidy.nvim--installation*
 
-Your installation configuration will depend on your plugin manager. Below is
-the basic installation (using default options) for lazy.nvim.
+Using lazy.nvim:
 
 >lua
     {
@@ -49,9 +48,10 @@ CONFIGURATION                             *tidy.nvim-tidy.nvim--configuration*
 tidy.nvim comes with the following options and their default settings:
 
 >lua
-        {
-            filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
-        }
+    {
+      enabled_on_save = true
+      filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
+    }
 <
 
 A more full example configuration for lazy.nvim would be:
@@ -60,10 +60,12 @@ A more full example configuration for lazy.nvim would be:
     {
         "mcauley-penney/tidy.nvim",
         opts = {
+            enabled_on_save = false
             filetype_exclude = { "markdown", "diff" }
         },
         init = function()
-            vim.keymap.set('n', "<leader>te", require("tidy").toggle, {})
+            vim.keymap.set('n', "<leader>tt", require("tidy").toggle, {})
+            vim.keymap.set('n', "<leader>tr", require("tidy").run, {})
         end
     }
 <
@@ -73,13 +75,14 @@ USAGE                                             *tidy.nvim-tidy.nvim--usage*
 
 tidy.nvim comes with the following functions:
 
-  -------------------------------------------------------------------------
+  -----------------------------------------------------------------------------
   Lua                        Description
-  -------------------------- ----------------------------------------------
-  require("tidy").toggle()   Turn tidy.nvim off for the current buffer a
-                             plugin
+  -------------------------- --------------------------------------------------
+  require("tidy").toggle()   Turn tidy.nvim off for the current buffer a plugin
 
-  -------------------------------------------------------------------------
+  require("tidy").run()      Run the formatting functionality of tidy.nvim off
+                             without saving
+  -----------------------------------------------------------------------------
 
 ABOUT AND CREDITS                     *tidy.nvim-tidy.nvim--about-and-credits*
 
