@@ -1,13 +1,13 @@
 # tidy.nvim 🧹
 
-**tidy.nvim** removes trailing white space and empty lines on BufWritePre.
+**tidy.nvim** removes trailing white space and empty lines at EOF.
 
 ![tidy-demo](https://github.com/mcauley-penney/tidy.nvim/assets/59481467/f3807c69-2b36-4a14-b83a-dd0f2829e096)
 
 ## Features
 
-- Remove white space at the end of every line on save
-- Remove empty lines at the end of the buffer on save
+- Remove white space at the end of every line on save or manual activation
+- Remove empty lines at the end of the buffer on save or manual activation
 
 ## Requirements
 
@@ -17,7 +17,7 @@ It may (should) work on lower versions, but is tested and updated using nightly.
 
 ## Installation
 
-Your installation configuration will depend on your plugin manager. Below is the basic installation (using default options) for lazy.nvim.
+Using lazy.nvim:
 
 ```lua
 {
@@ -31,9 +31,10 @@ Your installation configuration will depend on your plugin manager. Below is the
 tidy.nvim comes with the following options and their default settings:
 
 ```lua
-    {
-    	filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
-    }
+{
+  enabled_on_save = true
+  filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
+}
 ```
 
 A more full example configuration for lazy.nvim would be:
@@ -42,10 +43,12 @@ A more full example configuration for lazy.nvim would be:
 {
     "mcauley-penney/tidy.nvim",
     opts = {
+        enabled_on_save = false
         filetype_exclude = { "markdown", "diff" }
     },
     init = function()
-        vim.keymap.set('n', "<leader>te", require("tidy").toggle, {})
+        vim.keymap.set('n', "<leader>tt", require("tidy").toggle, {})
+        vim.keymap.set('n', "<leader>tr", require("tidy").run, {})
     end
 }
 ```
@@ -54,9 +57,10 @@ A more full example configuration for lazy.nvim would be:
 
 tidy.nvim comes with the following functions:
 
-| Lua                        | Description                                        |
-| -------------------------- | -------------------------------------------------- |
-| `require("tidy").toggle()` | Turn tidy.nvim off for the current buffer a plugin |
+| Lua                        | Description                                                      |
+| -------------------------- | ---------------------------------------------------------------- |
+| `require("tidy").toggle()` | Turn tidy.nvim off for the current buffer a plugin               |
+| `require("tidy").run()`    | Run the formatting functionality of tidy.nvim off without saving |
 
 ## About and Credits
 
@@ -68,4 +72,4 @@ I originally wrote this as a wrapper around a couple of vim regex commands used 
 
 - [This line](https://github.com/gpanders/editorconfig.nvim/blob/ae3586771996b2fb1662eb0c17f5d1f4f5759bb7/lua/editorconfig.lua#L180)
   in [gpanders/editorconfig.nvim](https://github.com/gpanders/editorconfig.nvim) for exposing me to the `keepjumps`
-  and `keeppatterns` modifiers 
+  and `keeppatterns` modifiers

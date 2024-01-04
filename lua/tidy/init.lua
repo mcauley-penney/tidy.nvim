@@ -1,11 +1,14 @@
 local M = {}
 
-M.enabled = true
+M.opts = {
+  enabled_on_save = true,
+  filetype_exclude = {},
+}
 
 function M.toggle()
-  M.enabled = not M.enabled
+  M.opts.enabled_on_save = not M.opts.enabled_on_save
 
-  if not M.enabled then
+  if not M.opts.enabled_on_save then
     vim.notify("Tidy disabled on save", vim.log.levels.WARN, { title = "Tidy" })
   else
     vim.notify("Tidy enabled on save", vim.log.levels.INFO, { title = "Tidy" })
@@ -22,9 +25,9 @@ local function list_to_set(list)
   return set
 end
 
-local function is_excluded_ft(opts)
+local function is_excluded_ft(excluded_fts)
   local ft = vim.api.nvim_buf_get_option(0, "filetype")
-  local ft_set = list_to_set(opts.filetype_exclude)
+  local ft_set = list_to_set(excluded_fts)
 
   return ft_set[ft]
 end
@@ -48,32 +51,37 @@ local function reset_cursor_pos(pos)
   vim.api.nvim_win_set_cursor(0, pos)
 end
 
-function M.setup(opts)
-  local defaults = {
-    filetype_exclude = {},
-  }
+function M.run()
+  if is_excluded_ft(M.opts.filetype_exclude) or
+      (vim.b.editorconfig ~= nil and not vim.tbl_isempty(vim.b.editorconfig)) then
+    return false
+  end
 
-  opts = vim.tbl_extend("force", defaults, opts or {})
+  local cursor_pos = vim.api.nvim_win_get_cursor(0)
+
+  -- delete trailing whitespace
+  vim.cmd([[:keepjumps keeppatterns %s/\s\+$//e]])
+
+  -- delete new lines @ eof
+  vim.cmd([[:keepjumps keeppatterns silent! 0;/^\%(\n*.\)\@!/,$d_]])
+
+  reset_cursor_pos(cursor_pos)
+end
+
+function M.setup(opts)
+  M.opts = vim.tbl_extend("force", M.opts, opts or {})
 
   local tidy_grp = vim.api.nvim_create_augroup("tidy", { clear = true })
 
-	vim.api.nvim_create_autocmd("BufWritePre", {
+  vim.api.nvim_create_autocmd("BufWritePre", {
     group = tidy_grp,
     callback = function()
-      if not M.enabled or is_excluded_ft(opts) or (vim.b.editorconfig ~= nil and not vim.tbl_isempty(vim.b.editorconfig)) then
+      if not M.opts.enabled_on_save then
         return false
       end
 
-      local cursor_pos = vim.api.nvim_win_get_cursor(0)
-
-      -- delete trailing whitespace
-      vim.cmd([[:keepjumps keeppatterns %s/\s\+$//e]])
-
-      -- delete lines @ eof
-      vim.cmd([[:keepjumps keeppatterns silent! 0;/^\%(\n*.\)\@!/,$d_]])
-
-      reset_cursor_pos(cursor_pos)
-    end,
+      M.run()
+    end
   })
 end
 
