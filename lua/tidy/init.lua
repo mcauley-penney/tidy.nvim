@@ -3,6 +3,7 @@ local M = {}
 M.opts = {
   enabled_on_save = true,
   filetype_exclude = {},
+  provide_undefined_editorconfig_behavior = false
 }
 
 function M.toggle()
@@ -51,18 +52,16 @@ local function reset_cursor_pos(pos)
   vim.api.nvim_win_set_cursor(0, pos)
 end
 
-function M.run()
-  if is_excluded_ft(M.opts.filetype_exclude) or
-      (vim.b.editorconfig ~= nil and not vim.tbl_isempty(vim.b.editorconfig)) then
-    return false
-  end
-
+function M.run(trim_ws)
   local cursor_pos = vim.api.nvim_win_get_cursor(0)
 
   -- delete trailing whitespace
-  vim.cmd([[:keepjumps keeppatterns %s/\s\+$//e]])
+  if trim_ws then
+    vim.cmd([[:keepjumps keeppatterns %s/\s\+$//e]])
+  end
 
   -- delete new lines @ eof
+  --  print("Running")
   vim.cmd([[:keepjumps keeppatterns silent! 0;/^\%(\n*.\)\@!/,$d_]])
 
   reset_cursor_pos(cursor_pos)
@@ -76,11 +75,23 @@ function M.setup(opts)
   vim.api.nvim_create_autocmd("BufWritePre", {
     group = tidy_grp,
     callback = function()
-      if not M.opts.enabled_on_save then
+      local trim_ws = true
+
+      if not M.opts.enabled_on_save or is_excluded_ft(M.opts.filetype_exclude) then
         return false
       end
 
-      M.run()
+      if vim.b.editorconfig ~= nil and not vim.tbl_isempty(vim.b.editorconfig) then
+        if not M.opts.provide_undefined_editorconfig_behavior then
+          return false
+        end
+
+        if vim.b.editorconfig.trim_trailing_whitespace ~= nil then
+          trim_ws = false
+        end
+      end
+
+      M.run(trim_ws)
     end
   })
 end
