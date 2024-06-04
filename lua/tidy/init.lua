@@ -5,6 +5,7 @@ M.opts = {
   filetype_exclude = {},
 }
 
+
 function M.toggle()
   M.opts.enabled_on_save = not M.opts.enabled_on_save
 
@@ -15,21 +16,11 @@ function M.toggle()
   end
 end
 
-local function list_to_set(list)
-  local set = {}
-
-  for _, item in ipairs(list) do
-    set[item] = true
-  end
-
-  return set
-end
-
 local function is_excluded_ft(excluded_fts)
   local ft = vim.api.nvim_buf_get_option(0, "filetype")
-  local ft_set = list_to_set(excluded_fts)
+  local contains = vim.fn.has('nvim-0.10') == 1 and vim.list_contains or vim.tbl_contains
 
-  return ft_set[ft]
+  return contains(excluded_fts, ft)
 end
 
 local function reset_cursor_pos(pos)
