@@ -1,56 +1,36 @@
-*tidy.nvim.txt*        For Neovim >= 0.9.0        Last change: 2024 January 04
+*tidy.nvim.txt*          For Neovim >= 0.9.0         Last change: 2024 June 04
 
 ==============================================================================
 Table of Contents                                *tidy.nvim-table-of-contents*
 
 1. tidy.nvim                                            |tidy.nvim-tidy.nvim-|
-  - Features                                   |tidy.nvim-tidy.nvim--features|
   - Requirements                           |tidy.nvim-tidy.nvim--requirements|
   - Installation                           |tidy.nvim-tidy.nvim--installation|
   - Configuration                         |tidy.nvim-tidy.nvim--configuration|
-  - Usage                                         |tidy.nvim-tidy.nvim--usage|
   - About and Credits                 |tidy.nvim-tidy.nvim--about-and-credits|
+2. Links                                                     |tidy.nvim-links|
 
 ==============================================================================
 1. tidy.nvim                                            *tidy.nvim-tidy.nvim-*
 
-**tidy.nvim**removes trailing white space and empty lines at EOF.
-
-
-FEATURES                                       *tidy.nvim-tidy.nvim--features*
-
-- Remove white space at the end of every line on save or manual activation
-- Remove empty lines at the end of the buffer on save or manual activation
+**tidy.nvim**removes trailing white space and empty lines at EOF on save.
 
 
 REQUIREMENTS                               *tidy.nvim-tidy.nvim--requirements*
 
 - Neovim >= 0.9.0
 
-It may (should) work on lower versions, but is tested and updated using
-nightly.
+It may work on lower versions, but is tested and updated using nightly.
 
 
 INSTALLATION                               *tidy.nvim-tidy.nvim--installation*
 
-Using lazy.nvim:
+Most basic configuration using lazy.nvim:
 
 >lua
     {
         "mcauley-penney/tidy.nvim",
         config = true,
-    }
-<
-
-
-CONFIGURATION                             *tidy.nvim-tidy.nvim--configuration*
-
-tidy.nvim comes with the following options and their default settings:
-
->lua
-    {
-      enabled_on_save = true
-      filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
     }
 <
 
@@ -71,9 +51,18 @@ A more full example configuration for lazy.nvim would be:
 <
 
 
-USAGE                                             *tidy.nvim-tidy.nvim--usage*
+CONFIGURATION                             *tidy.nvim-tidy.nvim--configuration*
 
-tidy.nvim comes with the following functions:
+tidy.nvim comes with the following options and their default settings:
+
+>lua
+    {
+      enabled_on_save = true
+      filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
+    }
+<
+
+tidy.nvim also comes with the following functions, which may be mapped:
 
   -----------------------------------------------------------------------------
   Lua                        Description
@@ -83,6 +72,13 @@ tidy.nvim comes with the following functions:
   require("tidy").run()      Run the formatting functionality of tidy.nvim off
                              without saving
   -----------------------------------------------------------------------------
+>lua
+    init = function()
+         vim.keymap.set('n', "<leader>tt", require("tidy").toggle, {})
+         vim.keymap.set('n', "<leader>tr", require("tidy").run, {})
+    end
+<
+
 
 ABOUT AND CREDITS                     *tidy.nvim-tidy.nvim--about-and-credits*
 
