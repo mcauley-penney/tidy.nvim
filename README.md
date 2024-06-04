@@ -2,7 +2,8 @@
 
 **tidy.nvim** removes trailing white space and empty lines at EOF on save.
 
-![tidy-demo](https://github.com/mcauley-penney/tidy.nvim/assets/59481467/f3807c69-2b36-4a14-b83a-dd0f2829e096)
+![tidy](https://github.com/mcauley-penney/tidy.nvim/assets/59481467/0c9c43c8-891a-40d4-9d54-b4bd5010be86)
+
 
 ## Requirements
 
