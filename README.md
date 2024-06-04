@@ -1,39 +1,23 @@
 # tidy.nvim 🧹
 
-**tidy.nvim** removes trailing white space and empty lines at EOF.
+**tidy.nvim** removes trailing white space and empty lines at EOF on save.
 
 ![tidy-demo](https://github.com/mcauley-penney/tidy.nvim/assets/59481467/f3807c69-2b36-4a14-b83a-dd0f2829e096)
-
-## Features
-
-- Remove white space at the end of every line on save or manual activation
-- Remove empty lines at the end of the buffer on save or manual activation
 
 ## Requirements
 
 - Neovim >= 0.9.0
 
-It may (should) work on lower versions, but is tested and updated using nightly.
+It may work on lower versions, but is tested and updated using nightly.
 
 ## Installation
 
-Using lazy.nvim:
+Most basic configuration using lazy.nvim:
 
 ```lua
 {
     "mcauley-penney/tidy.nvim",
     config = true,
-}
-```
-
-## Configuration
-
-tidy.nvim comes with the following options and their default settings:
-
-```lua
-{
-  enabled_on_save = true
-  filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
 }
 ```
 
@@ -53,14 +37,30 @@ A more full example configuration for lazy.nvim would be:
 }
 ```
 
-## Usage
+## Configuration
 
-tidy.nvim comes with the following functions:
+tidy.nvim comes with the following options and their default settings:
+
+```lua
+{
+  enabled_on_save = true
+  filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
+}
+```
+
+tidy.nvim also comes with the following functions, which may be mapped:
 
 | Lua                        | Description                                                      |
 | -------------------------- | ---------------------------------------------------------------- |
 | `require("tidy").toggle()` | Turn tidy.nvim off for the current buffer a plugin               |
 | `require("tidy").run()`    | Run the formatting functionality of tidy.nvim off without saving |
+
+```lua
+init = function()
+     vim.keymap.set('n', "<leader>tt", require("tidy").toggle, {})
+     vim.keymap.set('n', "<leader>tr", require("tidy").run, {})
+end
+```
 
 ## About and Credits
 
