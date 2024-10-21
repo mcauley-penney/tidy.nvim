@@ -1,4 +1,4 @@
-*tidy.nvim.txt*          For Neovim >= 0.9.0         Last change: 2024 June 04
+*tidy.nvim.txt*        For Neovim >= 0.9.0        Last change: 2024 October 21
 
 ==============================================================================
 Table of Contents                                *tidy.nvim-table-of-contents*
@@ -67,7 +67,7 @@ tidy.nvim also comes with the following functions, which may be mapped:
   -----------------------------------------------------------------------------
   Lua                        Description
   -------------------------- --------------------------------------------------
-  require("tidy").toggle()   Turn tidy.nvim off for the current buffer a plugin
+  require("tidy").toggle()   Turn tidy.nvim off for the current buffer
 
   require("tidy").run()      Run the formatting functionality of tidy.nvim off
                              without saving
