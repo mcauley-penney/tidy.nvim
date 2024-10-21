@@ -53,7 +53,7 @@ tidy.nvim also comes with the following functions, which may be mapped:
 
 | Lua                        | Description                                                      |
 | -------------------------- | ---------------------------------------------------------------- |
-| `require("tidy").toggle()` | Turn tidy.nvim off for the current buffer a plugin               |
+| `require("tidy").toggle()` | Turn tidy.nvim off for the current buffer                        |
 | `require("tidy").run()`    | Run the formatting functionality of tidy.nvim off without saving |
 
 ```lua
