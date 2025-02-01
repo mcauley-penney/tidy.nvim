@@ -28,7 +28,7 @@ A more full example configuration for lazy.nvim would be:
 {
     "mcauley-penney/tidy.nvim",
     opts = {
-        enabled_on_save = false
+        enabled_on_save = false,
         filetype_exclude = { "markdown", "diff" }
     },
     init = function()
@@ -44,7 +44,7 @@ tidy.nvim comes with the following options and their default settings:
 
 ```lua
 {
-  enabled_on_save = true
+  enabled_on_save = true,
   filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
 }
 ```
