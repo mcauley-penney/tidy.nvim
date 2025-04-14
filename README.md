@@ -40,14 +40,24 @@ A more full example configuration for lazy.nvim would be:
 
 ## Configuration
 
-tidy.nvim comes with the following options and their default settings:
+### Options and Defaults
 
 ```lua
 {
   enabled_on_save = true,
   filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
+  provide_undefined_editorconfig_behavior = false,  -- Set to true to trim whitespace even if .editorconfig omits the setting
 }
 ```
+
+#### EditorConfig Integration
+
+If your project uses `.editorconfig`, `tidy.nvim` will respect the `trim_trailing_whitespace` setting. When this option is explicitly set, the plugin will defer to it and skip trimming.
+
+However, if `.editorconfig` is present but the option is *not defined*, `tidy.nvim` will **not** trim whitespace by default. This is done because we expect that you do not want trailing whitespace trimmed if you have not defined this setting in your existing `.editorconfig` file. **This can make it seem like the plugin has stopped working, but it has not**. To override this behavior, set `provide_undefined_editorconfig_behavior = true` in your config. This setting will make tidy trim whitespace even if `.editorconfig` exists and does not hae the `trim_trailing_whitespace` setting.
+
+
+### Functions
 
 tidy.nvim also comes with the following functions, which may be mapped:
 
@@ -62,6 +72,7 @@ init = function()
      vim.keymap.set('n', "<leader>tr", require("tidy").run, {})
 end
 ```
+
 
 ## About and Credits
 
