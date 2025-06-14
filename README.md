@@ -11,9 +11,9 @@
 
 It may work on lower versions, but is tested and updated using nightly.
 
-## Installation
+## Installation and Configuration
 
-Most basic configuration using lazy.nvim:
+To install tidy.nvim with the default configuration using lazy.nvim, do:
 
 ```lua
 {
@@ -22,31 +22,14 @@ Most basic configuration using lazy.nvim:
 }
 ```
 
-A more full example configuration for lazy.nvim would be:
+tidy.nvim comes with the following defaults:
 
 ```lua
 {
-    "mcauley-penney/tidy.nvim",
-    opts = {
-        enabled_on_save = false,
-        filetype_exclude = { "markdown", "diff" }
-    },
-    init = function()
-        vim.keymap.set('n', "<leader>tt", require("tidy").toggle, {})
-        vim.keymap.set('n', "<leader>tr", require("tidy").run, {})
-    end
-}
-```
-
-## Configuration
-
-### Options and Defaults
-
-```lua
-{
-  enabled_on_save = true,
-  filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
-  provide_undefined_editorconfig_behavior = false,  -- Set to true to trim whitespace even if .editorconfig omits the setting
+  enabled_on_save = true
+  filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "diff", in this table
+  only_modified_lines = false,
+  provide_undefined_editorconfig_behavior = false,
 }
 ```
 
@@ -66,11 +49,20 @@ tidy.nvim also comes with the following functions, which may be mapped:
 | `require("tidy").toggle()` | Turn tidy.nvim off for the current buffer                        |
 | `require("tidy").run()`    | Run the formatting functionality of tidy.nvim off without saving |
 
+A more full example configuration for lazy.nvim would be:
+
 ```lua
-init = function()
-     vim.keymap.set('n', "<leader>tt", require("tidy").toggle, {})
-     vim.keymap.set('n', "<leader>tr", require("tidy").run, {})
-end
+{
+    "mcauley-penney/tidy.nvim",
+    opts = {
+        enabled_on_save = false
+        filetype_exclude = { "markdown", "diff" }
+    },
+    init = function()
+        vim.keymap.set('n', "<leader>tt", require("tidy").toggle, {})
+        vim.keymap.set('n', "<leader>tr", require("tidy").run, {})
+    end
+}
 ```
 
 
@@ -82,6 +74,4 @@ I originally wrote this as a wrapper around a couple of vim regex commands used 
 
 - `ib.`, the author of [this Stack Overflow answer](https://stackoverflow.com/a/7501902)
 
-- [This line](https://github.com/gpanders/editorconfig.nvim/blob/ae3586771996b2fb1662eb0c17f5d1f4f5759bb7/lua/editorconfig.lua#L180)
-  in [gpanders/editorconfig.nvim](https://github.com/gpanders/editorconfig.nvim) for exposing me to the `keepjumps`
-  and `keeppatterns` modifiers
+- [This line in gpanders/editorconfig.nvim](https://github.com/gpanders/editorconfig.nvim/blob/ae3586771996b2fb1662eb0c17f5d1f4f5759bb7/lua/editorconfig.lua#L180) for exposing me to the `keepjumps` and `keeppatterns` modifiers
