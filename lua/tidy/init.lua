@@ -123,9 +123,10 @@ function M.setup(opts)
         return
       end
 
+
       local trim_ws = true
 
-      if v.b.editorconfig ~= nil and not v.tbl_isempty(v.b.editorconfig) then
+      if vim.b.editorconfig and not vim.tbl_isempty(vim.b.editorconfig) then
         if not M.opts.provide_undefined_editorconfig_behavior then
           return
         end
