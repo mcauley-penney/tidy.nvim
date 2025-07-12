@@ -1,12 +1,11 @@
-*tidy.nvim.txt*         For Neovim >= 0.9.0         Last change: 2025 April 14
+*tidy.nvim.txt*          For Neovim >= 0.9.0         Last change: 2025 July 12
 
 ==============================================================================
 Table of Contents                                *tidy.nvim-table-of-contents*
 
 1. tidy.nvim                                            |tidy.nvim-tidy.nvim-|
   - Requirements                           |tidy.nvim-tidy.nvim--requirements|
-  - Installation                           |tidy.nvim-tidy.nvim--installation|
-  - Configuration                         |tidy.nvim-tidy.nvim--configuration|
+  - Installation and Configuration|tidy.nvim-tidy.nvim--installation-and-configuration|
   - About and Credits                 |tidy.nvim-tidy.nvim--about-and-credits|
 2. Links                                                     |tidy.nvim-links|
 
@@ -23,9 +22,9 @@ REQUIREMENTS                               *tidy.nvim-tidy.nvim--requirements*
 It may work on lower versions, but is tested and updated using nightly.
 
 
-INSTALLATION                               *tidy.nvim-tidy.nvim--installation*
+INSTALLATION AND CONFIGURATION*tidy.nvim-tidy.nvim--installation-and-configuration*
 
-Most basic configuration using lazy.nvim:
+To install tidy.nvim with the default configuration using lazy.nvim, do:
 
 >lua
     {
@@ -34,33 +33,14 @@ Most basic configuration using lazy.nvim:
     }
 <
 
-A more full example configuration for lazy.nvim would be:
+tidy.nvim comes with the following defaults:
 
 >lua
     {
-        "mcauley-penney/tidy.nvim",
-        opts = {
-            enabled_on_save = false,
-            filetype_exclude = { "markdown", "diff" }
-        },
-        init = function()
-            vim.keymap.set('n', "<leader>tt", require("tidy").toggle, {})
-            vim.keymap.set('n', "<leader>tr", require("tidy").run, {})
-        end
-    }
-<
-
-
-CONFIGURATION                             *tidy.nvim-tidy.nvim--configuration*
-
-
-OPTIONS AND DEFAULTS ~
-
->lua
-    {
-      enabled_on_save = true,
-      filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "markdown", in this table
-      provide_undefined_editorconfig_behavior = false,  -- Set to true to trim whitespace even if .editorconfig omits the setting
+      enabled_on_save = true
+      filetype_exclude = {}  -- Tidy will not be enabled for any filetype, e.g. "diff", in this table
+      only_modified_lines = false,
+      provide_undefined_editorconfig_behavior = false,
     }
 <
 
@@ -93,11 +73,20 @@ tidy.nvim also comes with the following functions, which may be mapped:
   require("tidy").run()      Run the formatting functionality of tidy.nvim off
                              without saving
   -----------------------------------------------------------------------------
+A more full example configuration for lazy.nvim would be:
+
 >lua
-    init = function()
-         vim.keymap.set('n', "<leader>tt", require("tidy").toggle, {})
-         vim.keymap.set('n', "<leader>tr", require("tidy").run, {})
-    end
+    {
+        "mcauley-penney/tidy.nvim",
+        opts = {
+            enabled_on_save = false
+            filetype_exclude = { "markdown", "diff" }
+        },
+        init = function()
+            vim.keymap.set('n', "<leader>tt", require("tidy").toggle, {})
+            vim.keymap.set('n', "<leader>tr", require("tidy").run, {})
+        end
+    }
 <
 
 
@@ -113,9 +102,8 @@ to every buffer and don’t want to have a formatting tool installed for them.
     <https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace>
 - `ib.`, the author of this Stack Overflow answer
     <https://stackoverflow.com/a/7501902>
-- This line
+- This line in gpanders/editorconfig.nvim
     <https://github.com/gpanders/editorconfig.nvim/blob/ae3586771996b2fb1662eb0c17f5d1f4f5759bb7/lua/editorconfig.lua#L180>
-    in gpanders/editorconfig.nvim <https://github.com/gpanders/editorconfig.nvim>
     for exposing me to the `keepjumps` and `keeppatterns` modifiers
 
 ==============================================================================
