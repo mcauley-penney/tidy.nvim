@@ -15,7 +15,7 @@ local function is_valid_bt()
 end
 
 local function is_excluded_ft(excluded_fts)
-  local ft = v.api.nvim_buf_get_option(0, "filetype")
+  local ft = v.api.nvim_get_option_value("filetype", {})
   local contains = v.fn.has("nvim-0.10") == 1 and v.list_contains
     or v.tbl_contains
   return contains(excluded_fts, ft)
