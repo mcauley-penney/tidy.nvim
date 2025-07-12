@@ -9,29 +9,26 @@ M.opts = {
 }
 
 local function is_valid_bt()
-  return v.bo.buftype ~= "terminal" and
-      v.bo.buftype ~= "nofile" and
-      v.bo.buftype ~= "prompt"
+  return v.bo.buftype ~= "terminal"
+    and v.bo.buftype ~= "nofile"
+    and v.bo.buftype ~= "prompt"
 end
 
 local function is_excluded_ft(excluded_fts)
   local ft = v.api.nvim_buf_get_option(0, "filetype")
-  local contains = v.fn.has('nvim-0.10') == 1 and v.list_contains or v.tbl_contains
+  local contains = v.fn.has("nvim-0.10") == 1 and v.list_contains
+    or v.tbl_contains
   return contains(excluded_fts, ft)
 end
 
 local function reset_cursor_pos(pos)
   local num_rows = v.api.nvim_buf_line_count(0)
-  if pos[1] > num_rows then
-    pos[1] = num_rows
-  end
+  if pos[1] > num_rows then pos[1] = num_rows end
   v.api.nvim_win_set_cursor(0, pos)
 end
 
 local function trim_modified_lines()
-  if not v.b.tidy_mod_lines then
-    return
-  end
+  if not v.b.tidy_mod_lines then return end
 
   local new_lines = v.api.nvim_buf_get_lines(0, 0, -1, false)
 
@@ -101,7 +98,7 @@ function M.setup(opts)
 
       v.b.tidy_start_lines = v.api.nvim_buf_get_lines(0, 0, -1, false)
       v.b.tidy_mod_lines = {}
-    end
+    end,
   })
 
   v.api.nvim_create_autocmd("TextChangedI", {
@@ -109,9 +106,8 @@ function M.setup(opts)
     callback = function()
       if not is_valid_bt() then return end
 
-
       track_insert_changes()
-    end
+    end,
   })
 
   v.api.nvim_create_autocmd("BufWritePre", {
@@ -119,26 +115,23 @@ function M.setup(opts)
     callback = function()
       if not is_valid_bt() then return end
 
-      if not M.opts.enabled_on_save or is_excluded_ft(M.opts.filetype_exclude) then
+      if
+        not M.opts.enabled_on_save or is_excluded_ft(M.opts.filetype_exclude)
+      then
         return
       end
-
 
       local trim_ws = true
 
       if vim.b.editorconfig and not vim.tbl_isempty(vim.b.editorconfig) then
-        if not M.opts.provide_undefined_editorconfig_behavior then
-          return
-        end
+        if not M.opts.provide_undefined_editorconfig_behavior then return end
         if v.b.editorconfig.trim_trailing_whitespace ~= nil then
           trim_ws = false
         end
       end
 
-      if trim_ws then
-        M.run()
-      end
-    end
+      if trim_ws then M.run() end
+    end,
   })
 
   v.api.nvim_create_autocmd("BufWritePost", {
@@ -148,7 +141,7 @@ function M.setup(opts)
 
       v.b.tidy_start_lines = v.api.nvim_buf_get_lines(0, 0, -1, false)
       v.b.tidy_mod_lines = {}
-    end
+    end,
   })
 end
 
