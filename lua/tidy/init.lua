@@ -44,9 +44,11 @@ end
 local function track_insert_changes()
   local cur_lines = v.api.nvim_buf_get_lines(0, 0, -1, false)
 
-  local old_text = table.concat(v.b.tidy_start_lines, "\n")
+  local old_text = table.concat(v.b.tidy_start_lines or "", "\n")
   local new_text = table.concat(cur_lines, "\n")
   local hunks = v.diff(old_text, new_text, { result_type = "indices" })
+
+  if type(hunks) ~= "table" then return end
 
   local changes = v.b.tidy_mod_lines
 
